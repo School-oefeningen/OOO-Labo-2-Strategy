@@ -1,48 +1,34 @@
 package model;
 
 public class CaesarEncryptie implements GeheimschriftBehavior{
-    private int start;
+    private int offset;
     private char[] alfabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 
-    public CaesarEncryptie(int start){
-        setStart(start);
+    public CaesarEncryptie(int offset){
+        setStart(offset);
     }
 
-    private void setStart(int start) {
-        this.start = start;
+    private void setStart(int offset) {
+        this.offset = offset;
     }
+
 
     @Override
     public String decodeer(String s) {
-        StringBuilder caesar = new StringBuilder();
-        for(char c: s.toLowerCase().toCharArray()){
-            if(c != ' '){
-                int oldPosition = c - 'a';
-                int newPosition = (oldPosition + this.start) % 26;
-                char newChar = (char) ('a' + newPosition);
-                caesar.append(newChar);
-            }
-            else{
-                caesar.append(c);
-            }
+        String result="";
+        for (int i = 0; i < s.length(); i++) {
+            result += Character.toString((char) ((((int)s.charAt(i)-offset-97+26)%26)+97));
         }
-        return caesar.toString();
+        return result;
     }
 
     @Override
     public String codeer(String s) {
-        StringBuilder caesar = new StringBuilder();
-        for(char c: s.toLowerCase().toCharArray()){
-            if(c != ' '){
-                int oldPosition = c - 'a';
-                int newPosition = (oldPosition + (26 -this.start)) % 26;
-                char newChar = (char) ('a' + newPosition);
-                caesar.append(newChar);
-            }
-            else{
-                caesar.append(c);
-            }
+        String result="";
+        for (int i = 0; i < s.length(); i++) {
+            result += Character.toString((char) ((((int)s.charAt(i)+offset-97+26)%26)+97));
         }
-        return caesar.toString();
+        return result;
+
     }
 }
